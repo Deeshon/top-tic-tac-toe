@@ -11,16 +11,6 @@ let gameBoard = {
 
 }
 
-
-// const block1 = document.querySelector("#block1")
-// block1.addEventListener('click', () => {
-//     block1.textContent = "X"
-//     gameBoard.push("X")
-// })
-
-
-
-
 const game = () => {
 
     const winCombos = [
@@ -63,56 +53,81 @@ const game = () => {
                     playerTwoScore += 1
                 }
                 if (playerOneScore == 3) {
-                    return playerOne.mark 
+                    let winner = playerOne.mark 
+                    const result = document.querySelector(".result")
+                    if (result.textContent == ""){
+                        const displayResult = document.createElement('p')
+                        displayResult.textContent = `${winner} Wins the round!`
+                        result.appendChild(displayResult)
+                        return playerOne.mark
+                    }
                 } else if (playerTwoScore == 3) {
-                    return playerTwo.mark
+                    let winner = playerTwo.mark
+                    const result = document.querySelector(".result")
+                    if (result.textContent == ""){
+                        const displayResult = document.createElement('p')
+                        displayResult.textContent = `${winner} Wins the round!`
+                        result.appendChild(displayResult)
+                        return playerTwo.mark
+                    }
                 }
             }
         }
     }
 
+    let drawMark = (content, position) => {
+        let block = document.querySelector(`#${position}`)
+        let p = document.createElement('p')
+        p.style.color = "rgb(152, 193, 217)" 
+        gameBoard[block.id] = playerTwo.mark
+        p.textContent = content
+        block.appendChild(p)
+    }  
+    
+    let aiMove = () => {
+        
+        while (true) {
+            position = Math.floor(Math.random() * 9);
+            var key = `block${position}`
+            if (gameBoard[key] != 0) {
+                continue
+            } else {
+                break
+            }
+        }
+        
+        
+        if (turn % 2 != 0) {
+            if (gameBoard[key] == 0) {
+                drawMark(playerTwo.mark, key)
+                turn += 1
+            }
+        }
+    }
+
     const blocks = document.querySelectorAll(".block")
+
+
+
     blocks.forEach((block) => {
         block.addEventListener('click', () => {
             const p = document.createElement("p")
-
             if (winner == null) {
                 if (turn % 2 == 0) {
                     if (block.textContent == "") {
-                        var content = playerOne.mark
                         p.style.color = '#EE6C4D'
+                        p.textContent = playerOne.mark
+                        gameBoard[block.id] = playerOne.mark
+                        block.appendChild(p)
                         turn += 1
                     }
-                } else {
-                    if (block.textContent == "" ) {
-                        var content = playerTwo.mark
-                        p.style.color = '#98C1D9'
-                        turn += 1
-                    }
-                }
-                p.textContent = content
-                gameBoard[block.id] = content
-                block.appendChild(p)
-            }
-            winner = checkWinner()
-            if (winner != null){
-                const result = document.querySelector(".result")
-                if (result.textContent == ""){
-                    const displayResult = document.createElement('p')
-                    displayResult.textContent = `${winner} Wins the round!`
-                    result.appendChild(displayResult)
-                    return
-                }
-            }
-            
-            
-
-
+                    
+                } 
+                aiMove()
+                winner = checkWinner()                
+            }     
         })
     })
-    
-
-
 }
 
 game()
