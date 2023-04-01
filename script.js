@@ -15,7 +15,7 @@ const game = () => {
 
     const winCombos = [
         ["block0","block1","block2"],
-        ["block0","block03","block6"],
+        ["block0","block3","block6"],
         ["block3","block4","block5"],
         ["block6","block7","block8"],
         ["block1","block4","block7"],
@@ -120,8 +120,7 @@ const game = () => {
                         gameBoard[block.id] = playerOne.mark
                         block.appendChild(p)
                         turn += 1
-                    }
-                    
+                    }                    
                 } 
                 aiMove()
                 winner = checkWinner()                
@@ -131,6 +130,11 @@ const game = () => {
 }
 
 game()
+
+const restart = document.querySelector(".restart")
+restart.addEventListener('click', () => {
+    location.reload()
+})
 
 
 
